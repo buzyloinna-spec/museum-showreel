@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Музей незавершених речей — шоуріл</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Inter:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400&subset=cyrillic&display=swap">
+<style>
+  :root{
+    --paper:#FBF7F0; --ink:#11110F; --ash:#6E6A62; --dust:#D9D5CC; --orange:#FF4F00;
+    --gut:48px;
+    --display:"Prata", "Didot", "Bodoni 72", Georgia, serif;
+    --sans:"Inter", "Helvetica Neue", Arial, sans-serif;
+    --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+    color-scheme: light;
+  }
+  html,body{background:var(--paper);color:var(--ink);margin:0;}
+  body{font-family:var(--sans);-webkit-font-smoothing:antialiased;}
+  .mono{font-family:var(--mono);font-size:11px;letter-spacing:.02em;text-transform:uppercase;}
+  .ash{color:var(--ash);}
+
+  /* ---------- Title ---------- */
+  .title{position:relative;min-height:100vh;padding-inline:var(--gut);display:flex;flex-direction:column;overflow:hidden;}
+  .bar{display:flex;justify-content:space-between;gap:16px;padding-block:22px 18px;border-bottom:1px solid var(--ink);}
+  .title h1{font-family:var(--display);font-weight:400;text-transform:uppercase;letter-spacing:-.03em;line-height:.88;margin:0;flex:1;display:flex;flex-direction:column;justify-content:center;padding-block:4vh;}
+  .title .l1{font-size:clamp(44px,7.6vw,110px);}
+  .title .l2{font-size:clamp(100px,18.8vw,270px);white-space:nowrap;margin-left:-.02em;width:max-content;align-self:flex-start;}
+  .title .l3{font-size:clamp(44px,7.6vw,110px);align-self:flex-end;display:flex;align-items:center;gap:.12em;}
+  .cursor{display:inline-block;width:5px;height:.78em;background:var(--orange);animation:blink 1.06s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0}}
+  .foot{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;border-top:1px solid var(--ink);padding-block:18px 26px;font-size:18px;line-height:1.3;}
+  .foot .enter{font-size:14px;font-weight:500;white-space:nowrap;}
+
+  /* ---------- Room 01 (pinned) ---------- */
+  .room-wrap{position:relative;height:640vh;background:var(--paper);}
+  .room{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--paper);}
+  .room .bar{position:absolute;left:var(--gut);right:var(--gut);top:0;z-index:4;border-bottom-color:var(--paper);}
+  .room .fx{mix-blend-mode:difference;color:#fff;}
+  .room .fx .ash,.room .fx.ash,.room .fx dt{color:#8D8D8E;}
+  .room .fx .meta{border-color:rgba(251,247,240,.3);}
+  .room .fx .closer{color:var(--paper);} .room .fx .closer::after{background:var(--paper);}
+  .room .onimg{mix-blend-mode:normal!important;color:var(--ink)!important;background:var(--paper);padding-inline:14px;border-bottom-color:transparent!important;transition:background .3s,padding .3s;}
+  .room .onimg .ash,.room .onimg.ash{color:var(--ash)!important;}
+  .band{position:absolute;left:0;right:0;height:18vh;background:var(--ink);z-index:1;will-change:transform;}
+  .plate{position:absolute;left:var(--gut);bottom:var(--gut);z-index:5;background:#fff;color:var(--ink);padding:24px 26px;max-width:500px;opacity:0;visibility:hidden;will-change:transform,opacity;}
+  .plate p{margin:10px 0 0;font-size:16px;line-height:1.55;}
+  .plate .pq{font-family:var(--display);font-size:clamp(22px,1.9vw,28px);line-height:1.18;letter-spacing:-.015em;margin-top:18px;text-wrap:balance;}
+  .plate .mono{color:var(--ash);}
+  .painting{position:absolute;margin:0;background:var(--dust);z-index:2;will-change:left,top,width,height,box-shadow;box-shadow:0 2px 6px rgba(17,17,15,.08),0 18px 44px rgba(17,17,15,.16);}
+  .painting img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 22%;}
+  .painting .missing{position:absolute;inset:0;display:none;align-items:flex-end;padding:16px;background:repeating-linear-gradient(135deg,#e7e2d8 0 10px,#efebe3 10px 20px);}
+  .painting.no-img .missing{display:flex;}
+  .painting.no-img img{display:none;}
+  .copy{position:absolute;left:var(--gut);width:min(44vw,560px);z-index:3;will-change:transform,opacity;}
+  .t-label,.t-story{opacity:0;visibility:hidden;}
+  .t-intro{bottom:14vh;}
+  .t-intro p{font-size:clamp(28px,3.1vw,46px);line-height:1.12;letter-spacing:-.02em;margin:10px 0 0;}
+  .t-label{top:120px;}
+  .t-label h2{font-family:var(--display);font-weight:400;font-size:clamp(56px,6.7vw,96px);line-height:.94;letter-spacing:-.03em;margin:0;text-wrap:balance;}
+  .t-label .by{font-size:20px;margin:22px 0 28px;}
+  .meta{display:grid;grid-template-columns:130px 1fr;row-gap:12px;border-top:1px solid rgba(17,17,15,.3);border-bottom:1px solid rgba(17,17,15,.3);padding-block:16px;font-size:15px;}
+  .meta dt{font-family:var(--mono);font-size:11px;letter-spacing:.02em;text-transform:uppercase;color:var(--ash);padding-top:2px;}
+  .meta dd{margin:0;}
+  .t-story{top:120px;}
+  .t-story .lead{font-size:18px;line-height:1.55;max-width:34em;margin:0;}
+  .t-story .q{font-style:italic;font-size:clamp(26px,2.5vw,36px);line-height:1.18;letter-spacing:-.01em;margin:44px 0 0;text-wrap:balance;}
+  .closer{display:inline-block;margin-top:40px;font-weight:500;font-size:15px;color:var(--ink);text-decoration:none;position:relative;padding-bottom:4px;}
+  .closer::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;background:var(--ink);transform:scaleX(.35);transform-origin:left;transition:transform .4s ease-out;}
+  .closer:hover::after,.closer:focus-visible::after{transform:scaleX(1);}
+  .closer:focus-visible{outline:2px solid var(--ink);outline-offset:4px;}
+  .progress{position:absolute;right:var(--gut);bottom:22px;font-variant-numeric:tabular-nums;z-index:4;}
+  .hint{position:absolute;left:var(--gut);bottom:22px;z-index:4;}
+
+
+  /* ---------- Room 00 — Austen (pinned) ---------- */
+  .room0-wrap{position:relative;height:560vh;}
+  .room0{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--paper);}
+  .room0 .bar{position:absolute;left:var(--gut);right:var(--gut);top:0;z-index:4;}
+  .ms{position:absolute;margin:0;background:var(--dust);box-shadow:0 2px 6px rgba(17,17,15,.08),0 18px 44px rgba(17,17,15,.14);will-change:left,top,width,height,opacity;}
+  .ms img{display:block;width:100%;height:100%;object-fit:cover;}
+  .a-copy{position:absolute;left:var(--gut);width:min(40vw,520px);z-index:3;opacity:0;visibility:hidden;will-change:transform,opacity;}
+  .a-copy>.mono{color:var(--ash);}
+  .wall-d{font-family:var(--display);text-transform:uppercase;font-size:clamp(40px,4.6vw,68px);line-height:.98;letter-spacing:-.025em;margin:14px 0 0;}
+  .a-copy .sub{font-size:clamp(18px,1.5vw,22px);line-height:1.4;margin:18px 0 0;}
+  .who{display:block;font-size:clamp(17px,1.4vw,21px);letter-spacing:-.005em;font-weight:500;}
+  .a-label h2{font-family:var(--display);font-weight:400;font-size:clamp(56px,6.7vw,96px);line-height:.94;letter-spacing:-.03em;margin:10px 0 0;}
+  .a-label .by{font-size:20px;margin:18px 0 26px;}
+  .a-story h3{font-weight:400;font-size:clamp(26px,2.4vw,36px);line-height:1.15;letter-spacing:-.02em;margin:12px 0 0;}
+  .a-story .lead{font-size:16px;line-height:1.5;margin:12px 0 0;max-width:34em;}
+  .a-story .q{font-style:italic;font-size:clamp(20px,1.8vw,26px);line-height:1.2;margin:18px 0 0;}
+  .nb-cap{position:absolute;z-index:3;opacity:0;visibility:hidden;}
+  .kind{margin:0;font-size:18px;display:flex;gap:14px;align-items:baseline;}
+  .kind .mono{color:inherit;opacity:.7;}
+  .conclusion{position:absolute;left:var(--gut);bottom:var(--gut);z-index:5;background:var(--paper);color:var(--ink);padding:28px 32px 32px;max-width:min(860px,calc(100% - 2*var(--gut)));opacity:0;visibility:hidden;will-change:transform,opacity;}
+  .conclusion .mono{color:var(--ash);}
+  .conclusion p{font-family:var(--display);font-size:clamp(34px,3.8vw,58px);line-height:1.04;letter-spacing:-.025em;margin:14px 0 0;text-wrap:balance;}
+  .t-why{top:110px;opacity:0;visibility:hidden;}
+  .t-why h3{font-weight:400;font-size:clamp(24px,2.2vw,32px);line-height:1.15;letter-spacing:-.02em;margin:12px 0 18px;}
+  .why-list{list-style:none;margin:0;padding:0;}
+  .why-list li{display:grid;grid-template-columns:36px 1fr;gap:10px;padding:14px 0;border-top:1px solid currentColor;font-size:15px;line-height:1.5;}
+  .why-list li .mono{padding-top:3px;}
+  .why-list b{font-weight:500;}
+  /* ---------- Room 02 — Pietà (static for now) ---------- */
+  /* ---------- Room 02 — Michelangelo (pinned) ---------- */
+  .room2-wrap{position:relative;height:540vh;}
+  .room2{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--ink);}
+  .room2 .bar{position:absolute;left:var(--gut);right:var(--gut);top:0;z-index:4;border-bottom-color:var(--paper);}
+  .room2 .fx{mix-blend-mode:difference;color:#fff;}
+  .room2 .fx .ash,.room2 .fx.ash,.room2 .fx dt{color:#8D8D8E;}
+  .room2 .fx .meta{border-color:rgba(251,247,240,.3);}
+  .sculpt{position:absolute;margin:0;overflow:hidden;background:#2a2926;z-index:2;will-change:left,top,width,height;}
+  .sculpt img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;will-change:transform,opacity;}
+  .sculpt .s-main{object-position:50% 42%;opacity:0;}
+  .sculpt .s-close{inset:auto;object-fit:fill;transform-origin:0 0;}
+  .sculpt.no-img img{display:none;}
+  .cap{position:absolute;left:var(--gut);bottom:14vh;z-index:5;background:var(--paper);color:var(--ink);padding:22px 26px;max-width:380px;will-change:transform,opacity;}
+  .cap p{margin:8px 0 0;font-size:clamp(24px,2.2vw,32px);line-height:1.12;letter-spacing:-.02em;}
+  .cap .mono{color:var(--ash);}
+  .cap.wall{max-width:none;}
+  .cap.wall p{font-family:var(--display);text-transform:uppercase;font-size:clamp(30px,3.2vw,46px);line-height:1;letter-spacing:-.02em;margin-top:12px;white-space:nowrap;}
+  .room2 .copy{top:120px;}
+  .t2-label,.t2-story{opacity:0;visibility:hidden;}
+  .t2-label h2{font-family:var(--display);font-weight:400;font-size:clamp(56px,6.7vw,96px);line-height:.94;letter-spacing:-.03em;margin:0;text-wrap:balance;}
+  .t2-label .by,.t2-story .by{font-size:20px;margin:22px 0 28px;}
+  .t2-story h3{font-weight:400;font-size:clamp(28px,2.6vw,38px);line-height:1.15;letter-spacing:-.02em;margin:0;}
+  .t2-story .lead{font-size:17px;line-height:1.5;max-width:32em;margin:16px 0 0;}
+  .t2-story .q{font-style:italic;font-size:clamp(24px,2.2vw,32px);line-height:1.15;margin:28px 0 0;}
+  .detail{position:absolute;z-index:3;width:clamp(240px,24vw,340px);aspect-ratio:4/3;background:#2a2926 url("pieta-first.jpg") no-repeat;background-size:cover;background-position:40% 60%;filter:brightness(1.3) contrast(1.06);opacity:0;visibility:hidden;will-change:transform,opacity;}
+  .detail-cap{position:absolute;z-index:3;opacity:0;visibility:hidden;font-size:10px;line-height:1.7;letter-spacing:.04em;white-space:nowrap;}
+
+  /* ---------- Intro (time-based, then scroll unlocks) ---------- */
+  .intro{position:relative;}
+  /* Slogan: letters surface out of the fog in random order, very slowly, and leave the same way */
+  .slogan{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2.2em;z-index:2;pointer-events:none;
+    font-family:var(--mono);text-transform:uppercase;font-size:clamp(17px,1.9vw,28px);letter-spacing:.04em;line-height:1.3;text-align:center;padding-inline:var(--gut);}
+  .slogan .sl{margin:0;}
+  .slogan .w{display:inline-block;white-space:nowrap;}
+  .slogan .ch{display:inline-block;opacity:0;filter:blur(9px);transform:translateY(var(--y,0));
+    transition:opacity 2.2s cubic-bezier(.37,0,.63,1) var(--d),filter 2.6s cubic-bezier(.37,0,.63,1) var(--d),transform 2.6s cubic-bezier(.37,0,.63,1) var(--d);}
+  .slogan .sl.in .ch{opacity:1;filter:blur(0);transform:none;}
+  .slogan .sl.out .ch{opacity:0;filter:blur(10px);transform:translateY(calc(var(--y,0) * -1));transition-delay:var(--o);transition-duration:2.4s,2.8s,2.8s;}
+  .q-intro{position:absolute;left:11%;top:36%;margin:0;font-weight:500;text-transform:uppercase;font-size:clamp(40px,5.8vw,84px);line-height:.98;letter-spacing:-.03em;opacity:0;transition:opacity 1.1s cubic-bezier(.2,0,0,1),transform 1.1s cubic-bezier(.2,0,0,1);transform:translateY(14px);z-index:2;}
+  .q-intro .cursor{margin-left:.12em;vertical-align:-.05em;}
+  .intro.s-q .q-intro{opacity:1;transform:none;} .intro.s-qout .q-intro{opacity:0;transform:translateY(-40px);}
+  .intro .bar,.intro .foot{opacity:0;transition:opacity 1.2s ease;}
+  .intro .l1,.intro .l2,.intro .l3{opacity:0;transform:translateY(24px);transition:opacity 1.2s cubic-bezier(.2,0,0,1),transform 1.2s cubic-bezier(.2,0,0,1);}
+  .intro.t1 .l1,.intro.t2 .l2,.intro.t3 .l3{opacity:1;transform:none;}
+  .intro.t1 .bar{opacity:1;} .intro.t4 .foot{opacity:1;}
+  .skip,.st-skip{display:none!important;}
+  #aNotebooks,#aNbCap,#wrap01{display:none!important;}
+  .reel-end{position:fixed;right:24px;top:20px;z-index:50;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:0;padding:12px 16px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .8s;}
+  .reel-end.on{opacity:1;pointer-events:auto;}
+  .skip{position:absolute;right:var(--gut);bottom:22px;z-index:5;background:none;border:0;color:var(--ash);cursor:pointer;padding:6px 0;transition:opacity .6s;}
+  .skip:hover,.skip:focus-visible{color:var(--ink);} .skip:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}
+  .intro.done .skip,.intro.t4 .skip{opacity:0;pointer-events:none;}
+
+  /* ---------- This is not the museum (orange 40 %) ---------- */
+  .orange{position:relative;min-height:100vh;padding-inline:var(--gut);background:#FDB490;background:color-mix(in srgb,var(--orange) 40%,var(--paper));}
+  .orange .bar{border-bottom-color:var(--ink);}
+  .orange .big{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(64px,12vw,190px);line-height:.88;letter-spacing:-.04em;margin:14vh 0 0;}
+  .list-sec{padding-block:0 10vh;min-height:auto;}
+  .list-sec .bar{margin-bottom:10vh;}
+  .two-sub{font-size:clamp(20px,1.8vw,26px);line-height:1.35;margin:-4vh 0 7vh;max-width:28em;}
+  .two{font-family:var(--display);font-weight:400;font-size:clamp(44px,6vw,88px);line-height:.98;letter-spacing:-.03em;margin:0 0 7vh;}
+  .coll{list-style:none;margin:0 calc(-1 * var(--gut)) 0 0;padding:0;}
+  .coll li{display:grid;grid-template-columns:80px minmax(140px,1fr) 2fr;align-items:center;gap:16px;min-height:72px;border-top:1px solid rgba(17,17,15,.55);}
+  .coll li .w{font-family:var(--display);font-size:clamp(24px,2.4vw,34px);}
+  .coll li.ghost{border-top-color:rgba(17,17,15,calc(var(--o) * .8));}
+  .coll li.ghost .mono{opacity:var(--o);} .coll li.ghost i{display:block;height:12px;background:var(--ink);opacity:calc(var(--o) * .45);}
+  .frag-note{text-align:right;margin:28px 0 0;font-size:15px;}
+
+  /* ---------- Reflection · But why? ---------- */
+  .why-wrap{position:relative;height:200vh;}
+  .why{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--paper);}
+  .tag{position:absolute;left:var(--gut);top:24px;}
+  .why-q{position:absolute;left:11%;top:13%;margin:0;font-weight:500;text-transform:uppercase;font-size:clamp(40px,5.8vw,84px);line-height:.98;letter-spacing:-.03em;will-change:opacity;}
+  .why-q .cursor{margin-left:.12em;vertical-align:-.05em;}
+  .why-but{position:absolute;left:11%;top:64%;font-size:clamp(22px,2vw,30px);letter-spacing:-.01em;opacity:0;will-change:opacity,transform;}
+  .why-line{position:absolute;top:calc(64% + clamp(14px,1.2vw,19px));height:2px;background:var(--orange);transform-origin:left center;transform:scaleX(0);will-change:transform;}
+  .why-why{position:absolute;top:44%;font-family:var(--display);font-size:clamp(140px,26vw,380px);line-height:.9;letter-spacing:-.04em;white-space:nowrap;opacity:0;will-change:opacity,transform;}
+
+  /* ---------- Ghosts: airy, slow, one at a time ---------- */
+  .ghostline{position:absolute;margin:0;white-space:nowrap;}
+  #m1{top:42%;left:11%;} #m2{top:57%;left:21%;} #m3{top:72%;left:31%;}
+  .ghostline{opacity:0;color:var(--ink);will-change:transform,opacity,filter;pointer-events:none;}
+  .ghostline .mb{display:block;font-family:var(--mono);font-size:clamp(12px,1vw,14px);letter-spacing:.14em;text-transform:uppercase;color:var(--ash);margin:0 0 .9em .2em;}
+  .ghostline .gt{display:block;font-family:var(--display);font-size:clamp(34px,4vw,60px);line-height:1;letter-spacing:-.03em;}
+
+  /* ---------- The answer: condenses in place, both lines together ---------- */
+  .ans{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding-inline:var(--gut);pointer-events:none;}
+  .ans p{margin:0;opacity:0;will-change:opacity,filter,letter-spacing,transform;}
+  .ans1{font-family:var(--display);font-weight:400;font-size:clamp(56px,8.6vw,132px);line-height:.92;letter-spacing:-.035em;text-wrap:balance;margin-bottom:5vh!important;}
+  .ans2{font-size:clamp(20px,2vw,28px);letter-spacing:-.01em;}
+  .ans2 .door{position:relative;display:inline-block;padding:.02em .22em .08em;margin-inline:-.04em;isolation:isolate;}
+  .ans2 .door::before{content:"";position:absolute;inset:0;background:var(--dust);z-index:-1;transform:scaleX(var(--fill,0));transform-origin:left center;}   /* grey fill sweeps in like a door opening */
+  .ans2 .cursor{width:3px;height:.9em;margin-left:.14em;vertical-align:-.1em;}
+  .st-skip{opacity:0;pointer-events:none;}
+  .why.playing .st-skip{opacity:1;pointer-events:auto;}
+
+  /* ---------- Visit + footer ---------- */
+  .visit{min-height:100vh;padding-inline:var(--gut);display:flex;flex-direction:column;}
+  .rest{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(56px,10.4vw,150px);line-height:.88;letter-spacing:-.04em;margin:10vh 0 6vh;}
+  .cta{align-self:flex-start;display:inline-flex;gap:14px;align-items:center;background:var(--ink);color:var(--paper);text-decoration:none;font-weight:500;font-size:17px;padding:24px 30px;position:relative;}
+  .cta::after{content:"";position:absolute;left:30px;right:30px;bottom:16px;height:1px;background:var(--orange);transform:scaleX(0);transform-origin:left;transition:transform .45s ease-out;}
+  .cta:hover::after,.cta:focus-visible::after{transform:scaleX(1);} .cta:focus-visible{outline:2px solid var(--ink);outline-offset:4px;}
+  .info{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin:auto 0 0;padding-block:28px 40px;border-top:1px solid var(--ink);}
+  .info dt{color:var(--ash);margin-bottom:10px;} .info dd{margin:0;font-size:16px;line-height:1.45;}
+  .soon{margin:auto 0 0;padding-block:28px 40px;border-top:1px solid var(--ink);font-size:13px;display:flex;align-items:center;gap:10px;}
+  .soon .cursor{width:2px;height:1.1em;}
+  .credits{margin:0;padding:14px var(--gut);border-top:1px solid var(--dust);color:var(--ash);font-size:10px;line-height:1.6;letter-spacing:.03em;}
+  .credits i{font-style:normal;color:var(--ink);opacity:.7;}
+  .replay{color:inherit;text-decoration:none;} .replay:hover{color:var(--ink);}
+  .site-foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:22px var(--gut) 28px;border-top:1px solid var(--ink);}
+  @media (max-width:720px){ .info{grid-template-columns:1fr 1fr;} .coll li{grid-template-columns:40px 1fr;} .coll li .w{grid-column:2;} }
+  @media (prefers-reduced-motion:reduce){ .why-wrap{height:auto;} .why{position:relative;height:auto;min-height:100vh;} }
+
+  @media (max-width:720px){
+    :root{--gut:16px;}
+    .copy{width:auto;right:var(--gut);}
+    .t-label,.t-story{top:auto;bottom:10vh;}
+    .t-label h2{font-size:48px;}
+    .meta{grid-template-columns:100px 1fr;font-size:14px;}
+    .t-story .q{margin-top:24px;font-size:24px;}
+    .foot{flex-direction:column;align-items:flex-start;}
+    .title .l3{font-size:40px;}
+    .bar{gap:10px;} .bar>span{min-width:0;}
+    .intro .bar span:nth-child(3){display:none;}
+    .detail,.detail-cap{display:none!important;}
+    .room2 .copy{left:var(--gut);right:var(--gut);width:auto;}
+    .t2-label h2{font-size:44px;} .t2-label .by,.t2-story .by{font-size:17px;margin:14px 0 18px;}
+    .t2-story h3{font-size:22px;} .t2-story .lead{font-size:14px;line-height:1.45;margin-top:10px;} .t2-story .q{font-size:18px;margin-top:12px;}
+    .cap.wall p{font-size:30px;white-space:normal;}
+    .plate{left:var(--gut);right:var(--gut);max-width:none;padding:18px 20px;} .plate p{font-size:14px;} .plate .pq{font-size:20px;}
+    .room2 .meta{grid-template-columns:90px 1fr;font-size:14px;row-gap:8px;padding-block:12px;}
+    .cap{bottom:12vh;max-width:none;right:var(--gut);}
+    .orange .big{margin:8vh 0 0;}
+    .orange:not(.list-sec){min-height:auto;padding-bottom:9vh;}
+    .list-sec{padding-top:0;} .list-sec .bar{margin-bottom:7vh;} .two-sub{font-size:18px;margin:-2vh 0 5vh;}
+    .two{margin-bottom:4vh;}
+    .coll li{min-height:60px;}
+    .why-q{left:var(--gut);right:var(--gut);top:12%;font-size:34px;}
+    #m1{top:36%;} #m2{top:53%;} #m3{top:70%;}
+    .why-but{left:var(--gut);top:74%;}
+    .why-line{top:calc(74% + 14px);}
+    .why-why{top:42%;}
+    .ghostline{left:var(--gut)!important;right:var(--gut);white-space:normal;}
+    .ghostline .gt{font-size:30px;line-height:1.05;}
+    .ans1{font-size:44px;} .ans2{font-size:18px;line-height:1.6;}
+    .rest{font-size:52px;margin:8vh 0 5vh;}
+    .cta{padding:20px 22px;font-size:16px;}
+    .site-foot{flex-direction:column;gap:10px;}
+    .slogan{font-size:13px;letter-spacing:.02em;gap:1.6em;}
+    .room2 .bar span:nth-child(2){display:none;}
+    .coll li.ghost i+i{display:none;}
+    .a-copy{width:auto;right:var(--gut);}
+    .wall-d{font-size:34px;} .a-copy .sub{font-size:16px;}
+    .a-label h2{font-size:48px;} .a-label .by{font-size:17px;margin:12px 0 16px;}
+    .a-story h3{font-size:22px;} .a-story .lead{font-size:13.5px;line-height:1.42;margin-top:8px;} .a-story .q{font-size:17px;margin-top:10px;}
+    .nb,.nb-cap{display:none!important;}
+    .conclusion{padding:18px 20px 22px;} .conclusion p{font-size:26px;}
+    .t-why{top:auto;bottom:4vh;} .t-why h3{font-size:20px;margin-bottom:8px;} .why-list li{font-size:13px;line-height:1.4;padding:8px 0;}
+  }
+  @media (prefers-reduced-motion:reduce){ .cursor{animation:none;} .room-wrap{height:auto;} .room{position:relative;} .band{display:none;} .room2-wrap{height:auto;} .room2{position:relative;} }
+</style>
+
+<section class="title intro" id="intro" aria-label="Музей незавершених речей">
+  <div class="slogan" id="slogan" aria-label="Не кожна незавершена річ — поразка. Не кожна завершена — успіх.">
+    <p class="sl" data-t="Не кожна незавершена річ — поразка."></p>
+    <p class="sl" data-t="Не кожна завершена — успіх."></p>
+  </div>
+  <div class="bar mono"><span class="ash">Що ви залишили незавершеним?</span><span class="ash">[00] Початок</span><span class="ash">Виставка у фрагментах</span></div>
+  <h1><span class="l1">Музей</span><span class="l2">незавершених</span><span class="l3">речей<span class="cursor" aria-hidden="true"></span></span></h1>
+  <div class="foot"><span></span><span class="enter">Зала 01 ↓</span></div>
+  <button class="skip mono" id="skip" type="button">Пропустити інтро</button>
+</section>
+
+<div class="room0-wrap" id="wrap00"><section class="room0" id="room00" aria-label="Експонат 01 — Джейн Остін, «Сендітон»">
+  <div class="bar mono"><span>[01] Експ. 01 — Джейн Остін</span><span class="ash">Експонат 01 колекції</span></div>
+
+  <figure class="ms" id="aFirst"><img src="austen-first.jpg" alt="Перша сторінка рукопису «Сендітон», датована 27 січня 1817 року."></figure>
+  <figure class="ms" id="aLast"><img src="austen-last.jpg" alt="Останні написані сторінки рукопису «Сендітон»; поруч — порожній аркуш."></figure>
+  <figure class="ms portrait" id="aPortrait"><img src="austen-portrait.jpg" alt="Портрет Джейн Остін."></figure>
+
+  <div class="a-copy" id="aT1"><span class="mono">Перша сторінка</span><p class="wall-d">27 січня 1817.</p><p class="sub">Джейн Остін починає новий роман.</p></div>
+  <div class="a-copy" id="aT2"><span class="mono">Остання сторінка</span><p class="wall-d">18 березня 1817.</p><p class="sub">Вона пише 11½ розділів — і зупиняється.<br>Далі аркуш порожній.</p></div>
+
+  <div class="a-copy a-label" id="aLabel">
+    <span class="who">Джейн Остін</span>
+    <h2>Сендітон</h2>
+    <p class="by">1817 · рукопис</p>
+    <dl class="meta">
+      <dt>Написано</dt><dd>11½ розділів</dd>
+      <dt>Рукопис</dt><dd>King’s College, Кембридж</dd>
+      <dt>Незавершеність</dt><dd>Обірвана</dd>
+    </dl>
+  </div>
+
+  <div class="a-copy" id="aT3"><span class="mono">18 липня 1817</span><p class="wall-d">Через чотири місяці її не стало.</p><p class="sub">Ми буквально маємо її останні написані сторінки.</p></div>
+
+  <div class="a-copy a-story" id="aStory">
+    <span class="who">Джейн Остін · 1775–1817</span>
+    <h3>Недописана — і все одно улюблена.</h3>
+    <p class="lead">Рукопис зберігається в King’s College у Кембриджі, а Кембридж оцифрував його — сторінки може погортати кожен.</p>
+    <p class="lead">Оскільки текст давно у вільному доступі, «Сендітон» дописували інші: «Інша леді» (Марі Доббс, 1975), Джулія Барретт та багато інших. На обкладинці все одно великими літерами — «Джейн Остін», а співавтора вказують нижче.</p>
+    <p class="lead">Після британського серіалу «Сендітон» (2019) інтерес спалахнув знову: рукопис перевидають, часто з кінообкладинкою.</p>
+    <p class="q">Її зупинила смерть. Але роман продовжує жити — чужими руками.</p>
+  </div>
+  <figure class="ms nb" id="aNotebooks"><img src="austen-notebooks.jpg" alt="Зошити рукопису «Сендітон»."></figure>
+  <span class="nb-cap mono ash" id="aNbCap">Зошити рукопису «Сендітон»</span>
+
+  <span class="progress mono" id="progress0">Зала 01 — 0%</span>
+</section></div>
+
+<div class="room2-wrap" id="wrap02"><section class="room2" id="room02" aria-label="Експонат 02 — Мікеланджело, П’єта Ронданіні">
+  <div class="bar mono fx" style="display:flex;justify-content:space-between;padding-block:22px 18px;border-bottom:1px solid"><span>[02] Експ. 02 — Мікеланджело</span><span class="ash">Експонат 02 колекції</span></div>
+
+  <figure class="sculpt" id="sculpt">
+    <img class="s-close" src="pieta-close.jpg" alt="П’єта Ронданіні: ноги Христа і ліворуч — відокремлена рука з першої версії.">
+    <img class="s-main" src="pieta.jpg" alt="Мікеланджело, П’єта Ронданіні, мармур, у залі Кастелло Сфорцеско, Мілан." onerror="this.parentNode.classList.add('no-img')">
+  </figure>
+
+  <div class="cap wall" id="cap1"><span class="mono">Експонат 02</span><p>Він передумав.</p></div>
+  <div class="cap wall" id="cap2"><span class="mono">Експонат 02</span><p>І передумав знову.</p></div>
+
+  <div class="copy t2-label fx" id="t2Label">
+    <span class="who">Мікеланджело</span>
+    <h2 style="margin-top:10px">П’єта Ронданіні</h2>
+    <p class="by">1552–1564</p>
+    <p class="kind"><span class="mono">Незавершеність</span>Пошук</p>
+  </div>
+
+  <div class="copy t2-story fx" id="t2Story">
+    <h3>Остін зупинила смерть. Мікеланджело зупиняв себе сам.</h3>
+    <p class="lead">Великий скульптор Відродження, автор «Давида», усе життя шукав ідеальне людське тіло. Цю П’єту — Марію, яка тримає мертвого Христа, — він різьбив до останніх днів.</p>
+    <p class="lead">Він уже вирізав частину фігур, а через роки почав знищувати зроблене, щоб знайти в тому самому камені іншу скульптуру. Тіла стали видовженими, майже безтілесними. Від першої версії лишилася права рука Христа.</p>
+    <p class="q">Майстер досконалості закінчує життя твором, що виглядає недосконалим.</p>
+  </div>
+
+  <span class="progress mono fx" id="progress2">Зала 02 — 0%</span>
+</section></div>
+<div class="room-wrap" id="wrap01"><section class="room" id="room01" aria-label="Експонат 03 — Кіт Гарінг, «Незакінчена картина»">
+  <div class="band" id="band1" aria-hidden="true"></div>
+  <div class="bar mono fx" style="justify-content:flex-end"><span>[03] Експ. 03 — Кіт Гарінг</span></div>
+
+  <figure class="painting" id="painting">
+    <img src="haring.jpg" alt="Кіт Гарінг, «Незакінчена картина», 1989: фіолетові лінії заповнюють верхній лівий кут і стікають донизу; решта полотна порожня." onerror="this.parentNode.classList.add('no-img')">
+    <span class="missing mono ash">Зображення: «Незакінчена картина», 1989</span>
+  </figure>
+
+  <div class="copy t-intro fx" id="tIntro">
+    <span class="mono ash">Експонат 03</span>
+    <p>Ця картина не обірвалася.<br>Її залишили порожньою<br>навмисно.</p>
+  </div>
+
+  <div class="copy t-label fx" id="tLabel">
+    <h2>Незакінчена картина</h2>
+    <p class="by">Кіт Гарінг, 1989</p>
+    <dl class="meta">
+      <dt>Експонат</dt><dd>03</dd>
+      <dt>Техніка</dt><dd>Акрил на полотні</dd>
+      <dt>Розмір</dt><dd>бл. 100 × 100 см</dd>
+      <dt>Порожньо</dt><dd>Приблизно три чверті полотна</dd>
+      <dt>Незавершеність</dt><dd>Протест</dd>
+    </dl>
+  </div>
+
+  
+
+  <div class="conclusion" id="concl"><span class="mono">І тоді питання стає набагато важчим</span><p>Чи ми бачимо незакінчену картину — чи завершену картину про незавершеність?</p></div>
+
+  <div class="copy t-why fx" id="tWhy">
+    <span class="mono ash">Чому порожнеча</span>
+    <h3>Порожнеча тут — не брак часу, а висловлювання.</h3>
+    <ol class="why-list">
+      <li><span class="mono">01</span><div><b>Обірвані життя.</b> У 1988 році Гарінг дізнався, що хворий на СНІД. Біле поле — це тисячі доль, проєктів і мрій, які епідемія обірвала на півслові.</div></li>
+      <li><span class="mono">02</span><div><b>Мовчання.</b> Гарінг був активістом і в ті ж роки малював плакати «Silence = Death». Цю порожнечу часто читають і як докір тим, хто мовчав про епідемію.</div></li>
+      <li><span class="mono">03</span><div><b>Власний фінал.</b> Візерунок заповнює лише верхній лівий кут, а фарба стікає донизу — наче незавершений шлях самого художника.</div></li>
+    </ol>
+  </div>
+  <span class="hint mono ash fx" id="hint">Гортайте ↓</span>
+  <span class="progress mono fx" id="progress">Зала 03 — 0%</span>
+</section></div>
+
+
+<!-- 03 · Reflection: the question, three possible answers, then the museum's answer -->
+<div class="why-wrap" id="wrapWhy"><section class="why" id="stage" aria-label="Що ви залишили незавершеним?">
+  <span class="mono ash tag">[03] Роздуми</span>
+  <p class="why-q" id="whyQ">Що ви залишили<br>незавершеним?<span class="cursor" aria-hidden="true"></span></p>
+  <p class="ghostline mq" id="m1"><span class="mb">Можливо,</span><span class="gt">це варто завершити.</span></p>
+  <p class="ghostline mq" id="m2"><span class="mb">Можливо,</span><span class="gt">ви це вже переросли.</span></p>
+  <p class="ghostline mq" id="m3"><span class="mb">Можливо,</span><span class="gt">воно й не мало закінчитися.</span></p>
+  <div class="ans" id="ans">
+    <p class="ans1">Музей не має<br>відповіді.</p>
+    <p class="ans2">Він лише <span class="door">відчиняє двері</span> до пошуку.<span class="cursor" aria-hidden="true"></span></p>
+  </div>
+  <button class="mono skip st-skip" id="stSkip" type="button">Пропустити →</button>
+</section></div>
+
+<!-- 04 · This is not the museum (orange 40 %) -->
+<section class="orange list-sec" aria-label="Три з багатьох">
+  <div class="bar mono"><span>[04] Колекція</span><span>Фрагмент колекції</span></div>
+  <h2 class="two">Три з багатьох.</h2>
+  <p class="two-sub">Решту ви побачите на власні очі — у музеї.</p>
+  <ol class="coll">
+    <li><span class="mono">01</span><span>Джейн Остін</span><span class="w">Сендітон</span></li>
+    <li><span class="mono">02</span><span>Мікеланджело</span><span class="w">П’єта Ронданіні</span></li>
+    <li><span class="mono">03</span><span>Кіт Гарінг</span><span class="w">Незакінчена картина</span></li>
+    <li class="ghost" style="--o:.34"><span class="mono">04</span><i style="width:24%"></i><i style="width:28%"></i></li>
+    <li class="ghost" style="--o:.22"><span class="mono">05</span><i style="width:14%"></i><i style="width:40%"></i></li>
+    <li class="ghost" style="--o:.12"><span class="mono">06</span><i style="width:21%"></i><i style="width:31%"></i></li>
+    <li class="ghost" style="--o:.06"><span class="mono">07</span><i style="width:17%"></i><i style="width:36%"></i></li>
+  </ol>
+  <p class="frag-note">Фрагмент колекції.</p>
+</section>
+
+<!-- 08 · Visit -->
+<section class="visit" aria-label="Відвідати виставку">
+  <div class="bar mono"><span>[05] Відвідати</span><span class="ash">Музей незавершених речей</span></div>
+  <h2 class="rest">Решта —<br>у музеї.</h2>
+  <a class="cta" href="#visit" id="visit">Відвідати виставку <span aria-hidden="true">→</span></a>
+  <p class="soon mono">Відкриття — дата згодом<span class="cursor" aria-hidden="true"></span></p>
+</section>
+<p class="credits mono">Джейн Остін: портрет — гравюра XIX ст.; рукопис «Сендітон» — King’s College, Cambridge. Фото — Wikimedia Commons: <i>П’єта Ронданіні</i>, загальний вигляд — Sailko; деталі — Giovanni Dall’Orto. <i>Незакінчена картина</i>, Кіт Гарінг, 1989 — з Wikimedia Commons. Ліцензії — на сторінці кожного файлу.</p>
+<footer class="site-foot mono"><span>Музей незавершених речей</span><span class="ash">Виставка у фрагментах · 3 історії онлайн</span><a class="ash replay" href="#" onclick="location.reload();return false;">↺ Переглянути інтро ще раз</a><span>Дизайн — Інна Бузило · 2026</span></footer>
+
+<script>
+/* ---------- Room 01 — Jane Austen: first page, last page, the label, the date, the afterlife ---------- */
+(function(){
+  const wrap=document.getElementById('wrap00'),$=id=>document.getElementById(id);
+  const A1=$('aFirst'),A2=$('aLast'),PT=$('aPortrait'),NB=$('aNotebooks'),NC=$('aNbCap');
+  const T1=$('aT1'),T2=$('aT2'),T3=$('aT3'),LB=$('aLabel'),ST=$('aStory'),prog=$('progress0');
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),seg=(p,a,b)=>clamp((p-a)/(b-a));
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,soft=t=>1-Math.pow(1-t,3),mix=(a,b,t)=>a+(b-a)*t;
+  const R1=390/594,R2=614/458,RP=1010/1202;
+  let W,H,g,narrow,P1,P1b,P2,PP,top1,top2,topL;
+  function measure(){
+    W=window.innerWidth;H=window.innerHeight;narrow=W<=720;g=narrow?16:48;
+    if(!narrow){
+      const h1=H*.74;P1={l:W-g-h1*R1-40,t:(H-h1)/2+24,w:h1*R1,h:h1};
+      const h2=H*.46,w1=h2*R1,w2=h2*R2,tot=w1+28+w2;P1b={l:W-g-tot,t:(H-h2)/2+24,w:w1,h:h2};P2={l:W-g-w2,t:(H-h2)/2+24,w:w2,h:h2};
+      const hp=H-150;PP={l:W-g-hp*RP,t:96,w:hp*RP,h:hp};
+      [T1,T2,T3].forEach(t=>{t.style.top='';t.style.bottom='16vh';t.style.width='';});T2.style.width=Math.max(260,P1b.l-g-40)+'px';LB.style.top='120px';ST.style.top='104px';
+      const avail=H-60-(104+ST.offsetHeight+30);NB.style.display=avail>120?'':'none';NC.style.display=NB.style.display;
+      const nh=Math.min(avail,220),nw=nh*1000/666;NB.style.left=g+'px';NB.style.top=(104+ST.offsetHeight+30)+'px';NB.style.width=nw+'px';NB.style.height=nh+'px';
+      NC.style.left=(g+nw+18)+'px';NC.style.top=(104+ST.offsetHeight+30+nh-14)+'px';
+    }else{
+      const h1=H*.44;P1={l:(W-h1*R1)/2,t:76,w:h1*R1,h:h1};
+      const h2=H*.22,w1=h2*R1,w2=W-2*g-w1-12;P1b={l:g,t:76,w:w1,h:h2};P2={l:g+w1+12,t:76+(h2-w2/R2)/2,w:w2,h:w2/R2};
+      const hp=H*.30;PP={l:W-g-hp*RP,t:76,w:hp*RP,h:hp};
+      T1.style.top=(76+h1+24)+'px';T2.style.top=(76+h2+28)+'px';T3.style.top=(76+hp+24)+'px';[T1,T2,T3].forEach(t=>t.style.bottom='auto');
+      LB.style.top=(76+hp+24)+'px';ST.style.top=(76+hp+20)+'px';
+    }
+  }
+  function place(el,b){el.style.left=b.l+'px';el.style.top=b.t+'px';el.style.width=b.w+'px';el.style.height=b.h+'px';}
+  function show(el,o,y){el.style.opacity=o;el.style.visibility=o<=0.001?'hidden':'visible';el.style.transform='translate3d(0,'+y+'px,0)';}
+  function render(p){
+    const m=ease(seg(p,.14,.27));                                            // first page steps aside, the last one arrives
+    place(A1,{l:mix(P1.l,P1b.l,m),t:mix(P1.t,P1b.t,m),w:mix(P1.w,P1b.w,m),h:mix(P1.h,P1b.h,m)});
+    place(A2,P2);place(PT,PP);
+    const lIn=soft(seg(p,.20,.29)),pOut=soft(seg(p,.40,.47));
+    A1.style.opacity=1-pOut;A2.style.opacity=lIn*(1-pOut);A2.style.transform='translateX('+(40*(1-lIn))+'px)';
+    const pi=soft(seg(p,.42,.50));PT.style.opacity=pi;PT.style.transform='translateY('+(30*(1-pi))+'px)';
+    const t1o=soft(seg(p,.12,.16));show(T1,1-t1o,-24*t1o);
+    const t2i=soft(seg(p,.25,.31)),t2o=soft(seg(p,.37,.41));show(T2,t2i*(1-t2o),24*(1-t2i)-24*t2o);
+    const li=soft(seg(p,.47,.53)),lo=soft(seg(p,.58,.62));show(LB,li*(1-lo),36*(1-li)-28*lo);
+    const t3i=soft(seg(p,.62,.67)),t3o=soft(seg(p,.73,.77));show(T3,t3i*(1-t3o),24*(1-t3i)-24*t3o);
+    const si=soft(seg(p,.78,.85));show(ST,si,36*(1-si));
+    const ni=soft(seg(p,.85,.92));show(NB,ni,30*(1-ni));show(NC,ni,30*(1-ni));
+    prog.textContent='Зала 01 — '+Math.round(p*100)+'%';
+  }
+  const target=()=>{const r=wrap.getBoundingClientRect();return clamp(-r.top/(r.height-H));};
+  measure();
+  if(reduce){render(.5);return;}
+  let cur=target(),raf=null;
+  function loop(){const t=target();cur+=(t-cur)*0.09;if(Math.abs(t-cur)<0.0004)cur=t;render(cur);raf=Math.abs(t-cur)>0?requestAnimationFrame(loop):null;}
+  window.addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(loop);},{passive:true});
+  window.addEventListener('resize',()=>{measure();cur=target();render(cur);});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{measure();render(cur);});
+  render(cur);
+})();
+</script>
+<script>
+(function(){
+  const wrap=document.getElementById('wrap01'),P=document.getElementById('painting');
+  const intro=document.getElementById('tIntro'),label=document.getElementById('tLabel');
+  const b1=document.getElementById('band1'),concl=document.getElementById('concl'),why=document.getElementById('tWhy');
+  const prog=document.getElementById('progress'),hint=document.getElementById('hint'),bar1=document.querySelector('#room01 .bar');
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+  const seg=(p,a,b)=>clamp((p-a)/(b-a));
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;          // smooth cubic in-out
+  const soft=t=>1-Math.pow(1-t,3);                              // gentle ease-out for text
+  const mix=(a,b,t)=>a+(b-a)*t;
+  let S,E,F,W,H;
+  function measure(){
+    W=window.innerWidth;H=window.innerHeight;const g=W<=720?16:48,narrow=W<=720;
+    const ew=narrow?Math.min(W-2*g,H*0.45):Math.min(W*0.46,H-150);
+    E=narrow?{l:g,t:76,w:ew,h:ew}:{l:W-g-ew,t:96,w:ew,h:ew};
+    const sw=narrow?W*0.22:Math.min(W*0.125,H*0.2);            // start: half of the previous 25%
+    S={l:g,t:narrow?76:96,w:sw,h:sw};
+    F={l:0,t:0,w:W,h:H};                                        // full screen
+  }
+  function box(a,b,t){P.style.left=mix(a.l,b.l,t)+'px';P.style.top=mix(a.t,b.t,t)+'px';P.style.width=mix(a.w,b.w,t)+'px';P.style.height=mix(a.h,b.h,t)+'px';}
+  function show(el,o,y){el.style.opacity=o;el.style.visibility=o<=0.001?'hidden':'visible';el.style.transform='translate3d(0,'+y+'px,0)';}
+  function render(p){
+    // 1 · small painting grows and travels right · 2 · label · 3 · full screen + story plate · big question · 4 · back to the right, why the emptiness
+    const g=ease(seg(p,0,.19)),f=ease(seg(p,.34,.50)),bk=ease(seg(p,.80,.88));
+    if(bk>0)box(F,E,bk);else if(f>0)box(E,F,f);else box(S,E,g);
+    const sh=bk>0?bk:(f>0?1-f:1);
+    P.style.boxShadow='0 2px 6px rgba(17,17,15,'+(.08*sh)+'),0 18px 44px rgba(17,17,15,'+(.16*sh)+')';
+    const i=soft(seg(p,.09,.15));show(intro,1-i,-28*i);
+    const li=soft(seg(p,.20,.27)),lo=soft(seg(p,.32,.38));show(label,li*(1-lo),36*(1-li)-28*lo);
+    const ci=soft(seg(p,.54,.61)),co=soft(seg(p,.76,.80));show(concl,ci*(1-co),24*(1-ci)-24*co);
+    const wi=soft(seg(p,.86,.93));show(why,wi,36*(1-wi));
+    // black bands scroll past at page speed — the painting stays pinned
+    const travel=p*(wrap.offsetHeight-H);
+    b1.style.transform='translate3d(0,'+(H*1.05-travel)+'px,0)';
+    prog.textContent='Зала 03 — '+Math.round(p*100)+'%';
+    hint.style.opacity=p>0.02?0:1;
+  }
+  const target=()=>{const r=wrap.getBoundingClientRect();return clamp(-r.top/(r.height-H));};
+  measure();
+  if(reduce){box(E,E,1);show(intro,0,0);show(label,1,0);show(why,1,0);return;}
+  let cur=target(),raf=null;
+  function loop(){                        // inertia: follow the scroll with a soft lag
+    const t=target();cur+=(t-cur)*0.09;
+    if(Math.abs(t-cur)<0.0004)cur=t;
+    render(cur);
+    raf=Math.abs(t-cur)>0?requestAnimationFrame(loop):null;
+  }
+  const kick=()=>{if(!raf)raf=requestAnimationFrame(loop);};
+  window.addEventListener('scroll',kick,{passive:true});
+  window.addEventListener('resize',()=>{measure();cur=target();render(cur);});
+  render(cur);
+})();
+</script>
+<script>
+(function(){
+  const wrap=document.getElementById('wrap02'),B=document.getElementById('sculpt'),img=B.querySelector('.s-close'),img2=B.querySelector('.s-main'),room=document.getElementById('room02');
+  const cap1=document.getElementById('cap1'),cap=document.getElementById('cap2'),label=document.getElementById('t2Label'),story=document.getElementById('t2Story'),prog=document.getElementById('progress2');
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),seg=(p,a,b)=>clamp((p-a)/(b-a));
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,soft=t=>1-Math.pow(1-t,3),mix=(a,b,t)=>a+(b-a)*t;
+  const ink=[17,17,15],paper=[251,247,240];
+  let F,E,W,H,g;
+  function measure(){
+    W=window.innerWidth;H=window.innerHeight;g=W<=720?16:48;
+    F={l:0,t:0,w:W,h:H};
+    if(W<=720){const h=H*0.30,w=Math.min(h*490/734,W-2*g);E={l:W-g-w,t:76,w,h};
+      const ct=(76+h+24)+'px';label.style.top=ct;story.style.top=ct;}          // phone: statue on top, text underneath
+    else{const h=H-150,w=Math.min(h*490/734,W*0.36);E={l:W-g-w,t:96,w,h};label.style.top='';story.style.top='';}
+  }
+  function show(el,o,y){el.style.opacity=o;el.style.visibility=o<=0.001?'hidden':'visible';el.style.transform='translate3d(0,'+y+'px,0)';}
+  function render(p){
+    // screen 1 · full screen, very close on the leftover arm (0 – 12 %)
+    // screen 2 · pulls back, still full screen, caption appears (12 – 42 %)
+    const z=ease(seg(p,.10,.28));
+    // screen 3 · shrinks to the right and sticks (44 – 62 %)
+    const k=ease(seg(p,.40,.66));
+    // screens 1–2: camera on the close-up photo — legs (thigh to feet) first, then it pulls back and settles on the arm
+    {const bw=F.w,bh=F.h,ia=2048/3072;let dw,dh;if(bw/bh>ia){dw=bw;dh=bw/ia;}else{dh=bh;dw=bh*ia;}
+     const ox=(bw-dw)/2,oy=(bh-dh)/2;
+     const legs={fx:.49,fy:.615,s:bh/(.26*dh),sx:.5,sy:.5};          // screen 1
+     const arm ={fx:.37,fy:.47, s:bh/(.30*dh),sx:.5,sy:.48};        // screen 2
+     const fx=mix(legs.fx,arm.fx,z),fy=mix(legs.fy,arm.fy,z),sc=mix(legs.s,arm.s,z),sx=mix(legs.sx,arm.sx,z),sy=mix(legs.sy,arm.sy,z);
+     img.style.width=dw+'px';img.style.height=dh+'px';img.style.left='0px';img.style.top='0px';
+     // with k the camera eases back to the plain full-frame view while the box shrinks
+     const s2=mix(sc,1,k),tx=mix(sx,.5,k)*bw-s2*mix(fx,.5,k)*dw,ty=mix(sy,.5,k)*bh-s2*mix(fy,.5,k)*dh;
+     const cx=Math.min(0,Math.max(bw-s2*dw,tx)),cy=Math.min(0,Math.max(bh-s2*dh,ty));   // never show the photo's edge
+     img.style.transform='translate('+cx+'px,'+cy+'px) scale('+s2+')';}
+    B.style.left=mix(F.l,E.l,k)+'px';B.style.top=mix(F.t,E.t,k)+'px';B.style.width=mix(F.w,E.w,k)+'px';B.style.height=mix(F.h,E.h,k)+'px';
+
+    const x=ease(seg(k,.05,.95));img.style.opacity=1-x;img2.style.opacity=x;  // screen 3: becomes the whole sculpture
+    // wall text: “He changed his mind.” on the close-up … pause … “And changed it again.”
+    const c1i=soft(seg(p,.02,.07)),c1o=soft(seg(p,.11,.15));show(cap1,c1i*(1-c1o),24*(1-c1i)-24*c1o);
+    const ci=soft(seg(p,.24,.30)),co=soft(seg(p,.40,.46));show(cap,ci*(1-co),24*(1-ci)-24*co);
+    const li=soft(seg(p,.62,.70)),lo=soft(seg(p,.76,.81));show(label,li*(1-lo),36*(1-li)-28*lo);
+    // screen 4 · story + the first-version close-up
+    const si=soft(seg(p,.79,.87));show(story,si,36*(1-si));
+    prog.textContent='Зала 02 — '+Math.round(p*100)+'%';
+  }
+  const target=()=>{const r=wrap.getBoundingClientRect();return clamp(-r.top/(r.height-H));};
+  measure();
+  if(reduce){render(0.8);return;}
+  let cur=target(),raf=null;
+  function loop(){const t=target();cur+=(t-cur)*0.09;if(Math.abs(t-cur)<0.0004)cur=t;render(cur);raf=Math.abs(t-cur)>0?requestAnimationFrame(loop):null;}
+  window.addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(loop);},{passive:true});
+  window.addEventListener('resize',()=>{measure();cur=target();render(cur);});
+  render(cur);
+})();
+</script>
+<script>
+/* ---------- Intro: time-based opening, then scroll unlocks ---------- */
+(function(){
+  const I=document.getElementById('intro'),root=document.documentElement;
+  const L=[...I.querySelectorAll('.sl')];
+  // phones: scale “UNFINISHED” so it runs past the right edge, as on desktop
+  const l2=I.querySelector('.l2');
+  function fitTitle(){l2.style.fontSize='';const gl=l2.getBoundingClientRect().left,w=l2.getBoundingClientRect().width,W=window.innerWidth-gl;
+    l2.style.fontSize=(parseFloat(getComputedStyle(l2).fontSize)*W/w/0.89)+'px';}   // the word is ~12% wider than the screen: its last letters run off the edge, as in English
+  // equal, measured gaps between the three title lines (ink to ink, using the real font metrics)
+  const l1=I.querySelector('.l1'),l3=I.querySelector('.l3'),cv=document.createElement('canvas').getContext('2d');
+  function ink(el,txt){const cs=getComputedStyle(el),fs=parseFloat(cs.fontSize);cv.font=cs.fontStyle+' '+cs.fontWeight+' '+fs+'px '+cs.fontFamily;
+    const m=cv.measureText(txt.toUpperCase()),fa=m.fontBoundingBoxAscent,fd=m.fontBoundingBoxDescent,lh=el.getBoundingClientRect().height;
+    const base=(lh-(fa+fd))/2+fa;return {top:base-m.actualBoundingBoxAscent,bot:base+m.actualBoundingBoxDescent,h:lh,fs};}
+  function spaceTitle(){l1.style.marginBottom='0px';l3.style.marginTop='0px';
+    const a=ink(l1,l1.textContent.trim()),b=ink(l2,'НЕЗАВЕРШЕН'),c0=ink(l3,'РЕЧЕ'),c1=ink(l3,'РЕЧЕЙ'),c={h:c0.h,top:(c0.top+c1.top)/2};   // the breve of Й counts half
+    const G=Math.max(12,b.fs*0.085);                                   // the same breathing room above and below the big word
+    l1.style.marginBottom=(G-(a.h-a.bot)-b.top)+'px';
+    l3.style.marginTop=(G-(b.h-b.bot)-c.top)+'px';}
+  function layoutTitle(){fitTitle();spaceTitle();}
+  layoutTitle();window.addEventListener('resize',layoutTitle);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layoutTitle);
+  // split each line into letters; each letter gets its own slow, random moment to appear and to leave
+  L.forEach((el,li)=>{
+    const words=el.dataset.t.split(' ');let n=0;const total=el.dataset.t.replace(/ /g,'').length;
+    el.innerHTML=words.map(w=>'<span class="w">'+[...w].map(c=>{n++;
+      const d=(Math.random()*3.0).toFixed(2), o=(Math.random()*1.8).toFixed(2), y=((Math.random()-.5)*10).toFixed(1);
+      return '<span class="ch" aria-hidden="true" style="--d:'+d+'s;--o:'+o+'s;--y:'+y+'px">'+c+'</span>';}).join('')+'</span>').join(' ');
+  });
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const timers=[];let done=false;
+  const at=(t,fn)=>timers.push(setTimeout(fn,t*1000));
+  function finish(){
+    if(done)return;done=true;timers.forEach(clearTimeout);
+    L.forEach(l=>{l.classList.remove('in');l.classList.add('out');});
+    I.classList.remove('s-q');I.classList.add('s-qout','t1','t2','t3','t4','done');
+    root.style.overflow='';
+    window.removeEventListener('keydown',skip);
+  }
+  function skip(e){if(!['Escape','Enter'].includes(e.key))return;finish();}   // scrolling no longer skips — only the button, Esc or Enter
+  document.getElementById('skip').addEventListener('click',finish);
+  if(reduce){finish();return;}
+  if('scrollRestoration' in history)history.scrollRestoration='manual';   // always start at the top on reload
+  root.style.overflow='hidden';window.scrollTo(0,0);
+  window.addEventListener('keydown',skip);
+  // 0–1.2 s: empty paper · the slogan surfaces letter by letter, line two after line one, holds, then dissolves
+  at(0.6,()=>L.forEach(l=>l.classList.add('in')));      // both lines surface together
+  at(7.4,()=>L.forEach(l=>{l.classList.remove('in');l.classList.add('out');}));
+  // the title builds line by line
+  at(10.6,()=>I.classList.add('t1'));
+  at(11.2,()=>I.classList.add('t2'));
+  at(11.8,()=>I.classList.add('t3'));
+  at(12.6,()=>I.classList.add('t4'));
+  at(13.4,finish);
+})();
+
+/* ---------- Reflection stage: the question stays on top, three answers surface under it, then the museum's answer ---------- */
+(function(){
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),seg=(p,a,b)=>clamp((p-a)/(b-a));
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  const sine=t=>-(Math.cos(Math.PI*t)-1)/2;
+  const root=document.documentElement;
+  const wrap=document.getElementById('wrapWhy'),stage=document.getElementById('stage');
+  const q=document.getElementById('whyQ'),M=['m1','m2','m3'].map(id=>document.getElementById(id));
+  const A1=stage.querySelector('.ans1'),A2=stage.querySelector('.ans2'),door=stage.querySelector('.door'),skipB=document.getElementById('stSkip');
+  const TRIG=.04,SNAP=.06;
+  let H,state='idle',t0=0,raf=null;
+  const prog=()=>{const r=wrap.getBoundingClientRect();return clamp(-r.top/(r.height-H));};
+
+  // a possible answer surfaces out of the blur and stays; k = fade of the whole group before the museum answers
+  function drawM(m,t,k){
+    const inn=sine(clamp(t/2.4)),o=inn*(1-k);
+    m.style.opacity=o.toFixed(3);
+    m.style.filter='blur('+(8*(1-inn)+6*k).toFixed(2)+'px)';
+    m.style.transform='translate('+(-2.5*(1-inn)).toFixed(2)+'vw,'+(6*(1-inn)).toFixed(1)+'px)';
+  }
+  function drawAns(t){
+    const k=sine(clamp(t/3.2));
+    [A1,A2].forEach((el,j)=>{
+      el.style.opacity=k;el.style.filter='blur('+(10*(1-k)).toFixed(2)+'px)';
+      el.style.letterSpacing=(j? -.01+.12*(1-k) : -.035+.09*(1-k)).toFixed(3)+'em';
+      el.style.transform='translateY('+(8*(1-k)).toFixed(1)+'px)';
+    });
+    door.style.setProperty('--fill',ease(seg(t,3.4,4.8)).toFixed(3));
+  }
+  function reset(){q.style.opacity=1;q.style.filter='';M.forEach(m=>{m.style.opacity=0;});[A1,A2].forEach(el=>{el.style.opacity=0;});door.style.setProperty('--fill',0);}
+
+  // Timeline (s): answers at 0.8 / 3.8 / 6.8 · all stay · 11.4–13.0 everything fades · museum answers at 13.4
+  const G=[0.6,2.8,5.0],FADE=8.0,ANS=9.6,END=ANS+5.0;
+  function tick(now){
+    const t=(now-t0)/1000,k=sine(seg(t,FADE,FADE+1.6));
+    q.style.opacity=(1-k).toFixed(3);q.style.filter='blur('+(6*k).toFixed(2)+'px)';
+    M.forEach((m,i)=>{const lt=t-G[i];if(lt<0){m.style.opacity=0;return;}drawM(m,lt,k);});
+    if(t>=ANS)drawAns(t-ANS);
+    if(t>=END){finish();return;}
+    raf=requestAnimationFrame(tick);
+  }
+  const block=e=>{if(state==='playing')e.preventDefault();};
+  function lock(on){root.style.overflow=on?'hidden':'';const fn=on?'addEventListener':'removeEventListener';
+    window[fn]('wheel',block,{passive:false});window[fn]('touchmove',block,{passive:false});}
+  function play(){
+    state='playing';stage.classList.add('playing');
+    const r=wrap.getBoundingClientRect(),top=window.scrollY+r.top;
+    window.scrollTo(0,top+SNAP*(r.height-H));
+    lock(true);t0=performance.now();raf=requestAnimationFrame(tick);
+  }
+  function finish(){
+    cancelAnimationFrame(raf);state='done';stage.classList.remove('playing');
+    q.style.opacity=0;M.forEach(m=>{m.style.opacity=0;});drawAns(10);lock(false);
+  }
+  skipB.addEventListener('click',finish);
+  function onScroll(){
+    if(state==='playing')return;
+    const p=prog(),r=wrap.getBoundingClientRect();
+    if(state==='idle'&&p>=TRIG)play();
+    else if(state==='done'&&r.top>H*0.6){state='idle';reset();}      // scrolled back above — it can play again
+  }
+  H=window.innerHeight;
+  if(reduce){M.forEach(m=>{m.style.opacity=1;});A1.style.opacity=A2.style.opacity=1;door.style.setProperty('--fill',1);return;}
+  let pend=null;
+  window.addEventListener('scroll',()=>{if(!pend)pend=requestAnimationFrame(()=>{onScroll();pend=null;});},{passive:true});
+  window.addEventListener('resize',()=>{H=window.innerHeight;});
+  onScroll();
+})();
+</script>
+<button class="reel-end" id="reelEnd" type="button" onclick="location.reload()">↺ Переглянути ще раз</button>
+<script>
+/* ---------- Showreel: the page scrolls itself through the best moments ---------- */
+(function(){
+  const $=id=>document.getElementById(id),H=()=>window.innerHeight;
+  const W=(id,f)=>()=>{const w=$(id);return w.offsetTop+f*(w.offsetHeight-H());};
+  const S=sel=>()=>document.querySelector(sel).offsetTop;
+  // [target, travel seconds, hold seconds]
+  const STEPS=[
+    [W('wrap00',.10),2.6,1.6],[W('wrap00',.33),2.4,2.0],[W('wrap00',.53),2.2,2.0],[W('wrap00',.70),2.0,2.0],[W('wrap00',.88),2.0,2.6],
+    [W('wrap02',.06),2.6,1.6],[W('wrap02',.32),2.4,1.8],[W('wrap02',.70),2.6,1.8],[W('wrap02',.97),2.0,2.6],
+    ['stage',2.2,0],
+    [S('.list-sec'),2.4,2.6],[S('.visit'),2.4,1.6],[()=>document.documentElement.scrollHeight-innerHeight,1.8,1.0]
+  ];
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  let stopped=false;
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  function glide(to,sec){return new Promise(res=>{const from=scrollY,t0=performance.now();
+    (function f(now){if(stopped)return res();const k=Math.min(1,(now-t0)/(sec*1000));scrollTo(0,from+(to-from)*ease(k));k<1?requestAnimationFrame(f):res();})(t0);});}
+  async function run(){
+    while(!$('intro').classList.contains('done')){await wait(200);}
+    await wait(1400);
+    for(const [t,sec,hold] of STEPS){
+      if(stopped)return;
+      if(t==='stage'){                                   // the reflection plays by itself; wait until it is over
+        const w=$('wrapWhy');await glide(w.offsetTop+0.08*(w.offsetHeight-H()),sec);
+        await wait(600);while($('stage').classList.contains('playing')){await wait(200);}await wait(2200);continue;}
+      await glide(t(),sec);await wait(hold*1000);
+    }
+    $('reelEnd').classList.add('on');
+  }
+  // any manual scroll gesture hands control back to the viewer
+  ['wheel','touchstart','keydown'].forEach(e=>window.addEventListener(e,()=>{if($('intro').classList.contains('done'))stopped=true;},{passive:true}));
+  window.addEventListener('load',run);
+})();
+</script>
+
+
+</html>
