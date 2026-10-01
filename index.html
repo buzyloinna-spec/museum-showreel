@@ -14,6 +14,7 @@
     color-scheme: light;
   }
   html,body{background:var(--paper);color:var(--ink);margin:0;}
+  html{scrollbar-gutter:stable;}   /* the page width never changes when scrolling is locked/unlocked — no jumping title */
   body{font-family:var(--sans);-webkit-font-smoothing:antialiased;}
   .mono{font-family:var(--mono);font-size:11px;letter-spacing:.02em;text-transform:uppercase;}
   .ash{color:var(--ash);}
@@ -79,7 +80,7 @@
   .ms img{display:block;width:100%;height:100%;object-fit:cover;}
   .a-copy{position:absolute;left:var(--gut);width:min(40vw,520px);z-index:3;opacity:0;visibility:hidden;will-change:transform,opacity;}
   .a-copy>.mono{color:var(--ash);}
-  .wall-d{font-family:var(--display);text-transform:uppercase;font-size:clamp(40px,4.6vw,68px);line-height:.98;letter-spacing:-.025em;margin:14px 0 0;}
+  .wall-d{font-family:var(--display);text-transform:uppercase;font-size:clamp(40px,4.6vw,68px);line-height:1.12;letter-spacing:-.025em;margin:14px 0 0;}   /* room for Ї Й diacritics */
   .a-copy .sub{font-size:clamp(18px,1.5vw,22px);line-height:1.4;margin:18px 0 0;}
   .who{display:block;font-size:clamp(17px,1.4vw,21px);letter-spacing:-.005em;font-weight:500;}
   .a-label h2{font-family:var(--display);font-weight:400;font-size:clamp(56px,6.7vw,96px);line-height:.94;letter-spacing:-.03em;margin:10px 0 0;}
@@ -198,7 +199,7 @@
 
   /* ---------- Visit + footer ---------- */
   .visit{min-height:100vh;padding-inline:var(--gut);display:flex;flex-direction:column;}
-  .rest{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(56px,10.4vw,150px);line-height:.88;letter-spacing:-.04em;margin:10vh 0 6vh;}
+  .rest{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(56px,10.4vw,150px);line-height:1.02;letter-spacing:-.04em;margin:10vh 0 6vh;}
   .cta{align-self:flex-start;display:inline-flex;gap:14px;align-items:center;background:var(--ink);color:var(--paper);text-decoration:none;font-weight:500;font-size:17px;padding:24px 30px;position:relative;}
   .cta::after{content:"";position:absolute;left:30px;right:30px;bottom:16px;height:1px;background:var(--orange);transform:scaleX(0);transform-origin:left;transition:transform .45s ease-out;}
   .cta:hover::after,.cta:focus-visible::after{transform:scaleX(1);} .cta:focus-visible{outline:2px solid var(--ink);outline-offset:4px;}
@@ -262,6 +263,8 @@
   @media (prefers-reduced-motion:reduce){ .cursor{animation:none;} .room-wrap{height:auto;} .room{position:relative;} .band{display:none;} .room2-wrap{height:auto;} .room2{position:relative;} }
 </style>
 
+</head>
+<body>
 <section class="title intro" id="intro" aria-label="Музей незавершених речей">
   <div class="slogan" id="slogan" aria-label="Не кожна незавершена річ — поразка. Не кожна завершена — успіх.">
     <p class="sl" data-t="Не кожна незавершена річ — поразка."></p>
@@ -752,4 +755,5 @@
 </script>
 
 
+</body>
 </html>
